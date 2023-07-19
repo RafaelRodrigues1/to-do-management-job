@@ -17,5 +17,5 @@ class User (
 )
 
 enum class UserStatus {
-    ATIVO, INATIVO, PENDENTE;
+    ATIVO, INATIVO, PENDENTE, PROCESSANDO;
 }

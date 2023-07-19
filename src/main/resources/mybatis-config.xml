@@ -4,8 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <package name="sample.mybatis.xml.domain"/>
+        <package name="com.personalproject.todomanagementjob.model"/>
     </typeAliases>
+    <typeHandlers>
+        <typeHandler
+            handler="com.personalproject.todomanagementjob.mapper.typehandler.UuidTypeHandler"
+            javaType="java.util.UUID"
+            jdbcType="VARCHAR"/>
+        <typeHandler
+            handler="org.apache.ibatis.type.DateTypeHandler"
+            javaType="java.util.Date"
+            jdbcType="DATE"/>
+        </typeHandlers>
     <mappers>
         <mapper resource="mapper/UserMapper.xml"/>
     </mappers>

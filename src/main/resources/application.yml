@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: hml
+server:
+  servlet:
+    context-path: /todomanagement
+

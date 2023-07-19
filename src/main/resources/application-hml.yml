@@ -6,6 +6,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     database-platform: org.hibernate.dialect.mysql8dialect
     show-sql: true
+  rabbitmq:
+    addresses: #link para instância do rabbitmq
 
 mybatis:
   config-location: classpath:mybatis-config.xml
+
+
+queue:
+  envio-confirmacao-cadastro: CONFIRMACAO_CADASTRO
+  envio-solicitacao-confirmacao-cadastro: SOLICITACAO_CONFIRMACAO_CADASTRO

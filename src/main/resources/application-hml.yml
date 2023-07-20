@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/to_do_management
-    username: RafaRodrigues
-    password: rafa123
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
     database-platform: org.hibernate.dialect.mysql8dialect
     show-sql: true
   rabbitmq:
-    addresses: #link para instância do rabbitmq
+    addresses: ${RABBITMQ_URI}
 
 mybatis:
   config-location: classpath:mybatis-config.xml

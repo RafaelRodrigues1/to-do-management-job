@@ -1,12 +1,11 @@
 package com.personalproject.todomanagementjob.scheduler
 
-import com.google.gson.GsonBuilder
 import com.personalproject.todomanagementjob.business.EmailBusiness
 import com.personalproject.todomanagementjob.mapper.UserMapper
 import com.personalproject.todomanagementjob.model.Email
 import com.personalproject.todomanagementjob.model.User
 import com.personalproject.todomanagementjob.model.UserStatus
-import org.springframework.amqp.rabbit.core.RabbitTemplate
+import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
@@ -23,7 +22,7 @@ class UserScheduler {
     private lateinit var emailBusiness: EmailBusiness
 
     @Autowired
-    private lateinit var rabbitTemplate: RabbitTemplate
+    private lateinit var rabbitTemplate: AmqpTemplate
 
     @Value("\${queue.envio-solicitacao-confirmacao-cadastro}")
     private lateinit var envioSolicitacaoConfirmacaoCadastroQueue: String
@@ -48,6 +47,6 @@ class UserScheduler {
     }
 
     private fun enviaParaFilaEmail(email: Email, queueName: String) {
-        rabbitTemplate.convertAndSend(queueName, GsonBuilder().create().toJson(email))
+        rabbitTemplate.convertAndSend(queueName, email)
     }
 }

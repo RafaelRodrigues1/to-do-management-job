@@ -14,5 +14,4 @@ mybatis:
 
 
 queue:
-  envio-confirmacao-cadastro: CONFIRMACAO_CADASTRO
-  envio-solicitacao-confirmacao-cadastro: SOLICITACAO_CONFIRMACAO_CADASTRO
+  envio-email: ENVIO_EMAIL_QUEUE

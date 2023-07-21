@@ -6,5 +6,5 @@ import lombok.Builder
 class Email (
     val title: String,
     val text: String,
-    var receiver: User? = null
+    val receiver: User? = null
 )

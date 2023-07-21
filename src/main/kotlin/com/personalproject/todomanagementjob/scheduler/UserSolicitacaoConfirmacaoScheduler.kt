@@ -1,11 +1,11 @@
 package com.personalproject.todomanagementjob.scheduler
 
-import com.personalproject.todomanagementjob.business.EmailBusiness
+import com.personalproject.todomanagementjob.business.`interface`.EmailBusiness
 import com.personalproject.todomanagementjob.mapper.UserMapper
 import com.personalproject.todomanagementjob.model.Email
 import com.personalproject.todomanagementjob.model.User
 import com.personalproject.todomanagementjob.model.UserStatus
-import org.springframework.amqp.core.AmqpTemplate
+import com.personalproject.todomanagementjob.service.QueueService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
@@ -13,24 +13,21 @@ import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
 @Component
-class UserScheduler {
+class UserSolicitacaoConfirmacaoScheduler {
 
     @Autowired
     private lateinit var userMapper: UserMapper
 
     @Autowired
-    private lateinit var emailBusiness: EmailBusiness
+    private lateinit var emailBusiness: EmailBusiness<User>
 
     @Autowired
-    private lateinit var rabbitTemplate: AmqpTemplate
+    private lateinit var queueService: QueueService
 
-    @Value("\${queue.envio-solicitacao-confirmacao-cadastro}")
-    private lateinit var envioSolicitacaoConfirmacaoCadastroQueue: String
+    @Value("\${queue.envio-email}")
+    private lateinit var envioEmailQueue: String
 
-    @Value("\${queue.envio-confirmacao-cadastro}")
-    private lateinit var envioConfirmacaoCadastroQueue: String
-
-    @Scheduled(fixedDelay = 30, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.SECONDS)
     fun enviaSolicitacaoConfirmacaoUserPendente() {
         val userPendente: User? = userMapper.findOneUserByStatus(UserStatus.PENDENTE)
         userPendente?.let {
@@ -39,13 +36,8 @@ class UserScheduler {
     }
 
     private fun processaEnvioSolicitacaoConfirmacaoUsuario(user: User) {
-        val email: Email = emailBusiness.buildEmailSolicitacaoConfirmacaoCadastro()
-        email.receiver = user
-        enviaParaFilaEmail(email, envioSolicitacaoConfirmacaoCadastroQueue)
+        val email: Email = emailBusiness.buildEmail(user)
+        queueService.enviaParaFila(email, envioEmailQueue)
         userMapper.updateStatusUser(user.id.toString(), UserStatus.PROCESSANDO)
-    }
-
-    private fun enviaParaFilaEmail(email: Email, queueName: String) {
-        rabbitTemplate.convertAndSend(queueName, email)
     }
 }

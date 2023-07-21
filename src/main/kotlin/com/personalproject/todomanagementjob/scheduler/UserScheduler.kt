@@ -31,12 +31,11 @@ class UserScheduler {
     private lateinit var envioConfirmacaoCadastroQueue: String
 
     @Scheduled(fixedDelay = 30, timeUnit = TimeUnit.SECONDS)
-    fun getusers() {
-        val listusersPendentes: List<User> = userMapper.findAllUsersByStatus(UserStatus.PENDENTE)
-        if(!listusersPendentes.isNullOrEmpty())
-            listusersPendentes.forEach{ user -> processaEnvioSolicitacaoConfirmacaoUsuario(user) }
-        else
-            println("Não há usuários para solicitação de confirmação de cadastro!")
+    fun enviaSolicitacaoConfirmacaoUserPendente() {
+        val userPendente: User? = userMapper.findOneUserByStatus(UserStatus.PENDENTE)
+        userPendente?.let {
+            processaEnvioSolicitacaoConfirmacaoUsuario(it)
+        } ?: println("Não há usuários para solicitação de confirmação de cadastro!")
     }
 
     private fun processaEnvioSolicitacaoConfirmacaoUsuario(user: User) {

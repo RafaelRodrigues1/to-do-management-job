@@ -3,11 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.personalproject.todomanagementjob.mapper.UserMapper">
-    <select id="findAllUsersByStatus" resultType="User">
-        select id, name, registration, email, dt_register, status from users where status = #{status} order by dt_register
+    <select id="findOneUserByStatus" resultType="User">
+        select id, name, registration, email, dt_register, status
+        from users
+        where status = #{status}
+        order by dt_register limit 1
     </select>
 
     <update id="updateStatusUser">
-        update users set status = #{status} where id = #{id}
+        update users
+        set status = #{status}
+        where id = #{id}
     </update>
 </mapper>

@@ -25,6 +25,7 @@ class UserSolicitacaoConfirmacaoEmailBusiness: EmailBusiness<User> {
 
     override fun setDadosInEmailBody(user: User, emailBody: String) {
         emailBody.replace("{userName}", user.name)
+        emailBody.replace("{userRegistration}", user.registration)
     }
 
     override val EMAIL_BODY_PARAMETER_NAME: String = "TEXTO_EMAIL_SOLICITACAO_CONFIRMACAO"

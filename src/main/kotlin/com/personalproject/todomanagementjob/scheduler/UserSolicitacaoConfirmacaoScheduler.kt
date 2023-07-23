@@ -27,7 +27,7 @@ class UserSolicitacaoConfirmacaoScheduler {
     @Value("\${queue.envio-email}")
     private lateinit var envioEmailQueue: String
 
-    @Scheduled(fixedDelay = 1, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.SECONDS)
     fun enviaSolicitacaoConfirmacaoUserPendente() {
         val userPendente: User? = userMapper.findOneUserByStatus(UserStatus.PENDENTE)
         userPendente?.let {

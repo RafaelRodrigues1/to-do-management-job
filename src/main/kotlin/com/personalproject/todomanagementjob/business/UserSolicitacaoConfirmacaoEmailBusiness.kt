@@ -14,8 +14,8 @@ class UserSolicitacaoConfirmacaoEmailBusiness: EmailBusiness<User> {
     private lateinit var parameterMapper: ParameterMapper
 
     override fun buildEmail(user: User): Email {
-        val emailBody: String = parameterMapper.findParameterValueByName(EMAIL_BODY_PARAMETER_NAME)
-        setDadosInEmailBody(user, emailBody)
+        var emailBody: String = parameterMapper.findParameterValueByName(EMAIL_BODY_PARAMETER_NAME)
+        emailBody = setDadosInEmailBody(user, emailBody)
         return Email(
             title = EMAIL_TITLE,
             text = emailBody,
@@ -23,9 +23,11 @@ class UserSolicitacaoConfirmacaoEmailBusiness: EmailBusiness<User> {
         )
     }
 
-    override fun setDadosInEmailBody(user: User, emailBody: String) {
-        emailBody.replace("{userName}", user.name)
-        emailBody.replace("{userRegistration}", user.registration)
+    override fun setDadosInEmailBody(user: User, emailBody: String): String {
+        var email: String = emailBody
+        email = email.replace("{userName}", user.name)
+        email = email.replace("{userRegistration}", user.registration)
+        return email
     }
 
     override val EMAIL_BODY_PARAMETER_NAME: String = "TEXTO_EMAIL_SOLICITACAO_CONFIRMACAO"
